@@ -10,6 +10,7 @@
 packages
 .packages
 build
+pubspec.lock
 
 #other
 .settings
