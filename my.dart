@@ -157,5 +157,85 @@ main() {
   ..y=4;
 
   print("p1=$p1 p2=$p2");
+
+
+  var ip1 = const ImmutablePoint(1,2);
+  var ip2 = const ImmutablePoint(1,2);
+  assert(identical(ip1, ip2));
+
+
+  final v1 = new Vector(2, 3);
+  final v2 = new Vector(2, 2);
+
+  assert((v1 + v2).x == 4 && (v1 + v2).y == 5);
+
+
+  var musician = new Musician("Misha");
+  musician.entertainMe();
+  print("musician=$musician");
+}
+
+
+class Musician extends Person with Musical {
+  Musician(name) : super(name);
+}
+
+class Person {
+  // In the interface, but visible only in this library.
+  final _name;
+
+  // Not in the interface, since this is a constructor.
+  Person(this._name);
+
+  // In the interface.
+  String greet(String who) => 'Hello, $who. I am $_name.';
+}
+
+class Musical {
+  bool canPlayPiano = false;
+  bool canCompose = false;
+  bool canConduct = false;
+
+  void entertainMe() {
+    print("my hashcode: ${super.hashCode}");
+    if (canPlayPiano) {
+      print('Playing piano');
+    } else if (canConduct) {
+      print('Waving hands');
+    } else {
+      print('Humming to self');
+    }
+  }
+}
+
+
+
+class Vector {
+  final int x, y;
+
+  const Vector(this.x, this.y);
+
+  /// Overrides + (a + b).
+  Vector operator +(Vector v) {
+    return new Vector(x + v.x, y + v.y);
+  }
+
+  /// Overrides - (a - b).
+  Vector operator -(Vector v) {
+    return new Vector(x - v.x, y - v.y);
+  }
+}
+
+class ImmutablePoint implements Comparable<ImmutablePoint> {
+  static final ImmutablePoint origin = const ImmutablePoint(0, 0);
+
+  final num x, y;
+
+  const ImmutablePoint(this.x, this.y);
+
+  @override
+  int compareTo(ImmutablePoint other) {
+
+  }
 }
 
