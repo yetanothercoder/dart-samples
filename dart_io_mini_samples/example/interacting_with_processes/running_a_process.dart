@@ -9,6 +9,6 @@ import 'dart:io';
 
 main() async {
   // List all files in the current directory in UNIX-like operating systems.
-  var results = await Process.run('ls', ['-l']);
+  var results = await Process.run('ls', ['-lha']);
   print(results.stdout);
 }

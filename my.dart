@@ -1,4 +1,5 @@
 // Define a function.
+import 'dart:async';
 import 'dart:convert';
 
 printInteger(int aNumber) {
@@ -12,6 +13,12 @@ Function makeAdder(num addBy) {
 }
 
 void foo() {} // A top-level function
+
+foo1() async { return 42; }
+
+void addStringToList(List<dynamic> list) { // tried List<Object> or just List - same
+  list.add("my");
+}
 
 class A {
   static void bar() {} // A static method
@@ -35,7 +42,12 @@ class Point {
 }
 
 // This is where the app starts executing.
-main() {
+main() async {
+  
+  List<int> intList = [1,2,7,8,9,0,0];
+  addStringToList(intList);
+  print("my list type of ${intList.runtimeType}: $intList");
+  
   var d = r"41";
 
   var number = int.parse(d); // Declare and initialize a variable.
@@ -173,7 +185,78 @@ main() {
   var musician = new Musician("Misha");
   musician.entertainMe();
   print("musician=$musician");
+
+  runAsyncs();
+
+
+  SortedCollection coll = new SortedCollection(sort);
+
+  // All we know is that compare is a function,
+  // but what type of function?
+  print(coll.compare);
+  assert(coll.compare is Compare<int>);
+  print("foo1: $foo1, ${foo1.runtimeType}");
+  
+  await for (var fibNum in fibsTo(50)) {
+    print ("ts ${new DateTime.now().millisecondsSinceEpoch}: fibNum=$fibNum");
+  }
+  
+  scheduleMicrotask(()=> print("my first Micro! task )"));
+  new Future.delayed(new Duration(milliseconds: 1), () => print("print from Future!"));
+  
+  print("********* FIB REVERSE >>");
+  for (var fibNum in fibsToReverse(50)) {
+    print ("ts ${new DateTime.now().millisecondsSinceEpoch}: fibNum=$fibNum");
+  }
+//  print("fibs: ${fibsTo(70).skip(50).forEach((e) => print(e))}");
 }
+
+
+Stream<int> fibsTo(n) async* {
+  int k = 1;
+  while (k <= n) yield fib(k++);
+}
+
+Iterable<int> fibsToReverse(n) sync* {
+  if (n > 0) {
+    yield fib(n);
+    yield* fibsToReverse(n-1);
+  }
+}
+
+int fib(n) {
+  List<int> results = new List(n + 1);
+  if (n <= 0) throw new ArgumentError(0);
+  if (n <= 2) return n - 1;
+  
+  results[1] = results[2] = 1;
+  
+  for (var i = 3; i <= n; ++i) {
+    results[i] = results[i-1] + results[i-2];
+  }
+  
+  return results[n];
+} 
+
+
+
+class SortedCollection {
+  Compare compare;
+
+  SortedCollection(this.compare);
+}
+
+typedef int Compare<T>(T a, T b);
+
+// Initial, broken implementation.
+int sort(Object a, Object b) => 0;
+
+void runAsyncs() async {
+  var version = await lookUpVersion();
+  print(version);
+}
+
+Future<String> lookUpVersion() async => '1.0.0';
 
 
 class Musician extends Person with Musical {
@@ -197,7 +280,7 @@ class Musical {
   bool canConduct = false;
 
   void entertainMe() {
-    print("my hashcode: ${super.hashCode}");
+    print("my hashcode: ");
     if (canPlayPiano) {
       print('Playing piano');
     } else if (canConduct) {
