@@ -209,6 +209,66 @@ main() async {
     print ("ts ${new DateTime.now().millisecondsSinceEpoch}: fibNum=$fibNum");
   }
 //  print("fibs: ${fibsTo(70).skip(50).forEach((e) => print(e))}");
+
+  print("<< ********* FIB REVERSE");
+
+
+  List<Cat> myCats = new List<MaineCoon>();
+
+//  List<Cat> myCats2 = new List<Animal>();
+
+  Map<String, int> map = {'a': 1, 'b': 2, 'c': 3};
+  setStrValue(map, 'a');
+//  map['a'] = "777";
+  print("map: $map");
+
+  print("typedef F: ${MyFunc.runtimeType}");
+  assert(sort is Compare);
+  assert(sort is Compare2);
+}
+
+List<T> MyFunc<T>(T param) => null;
+
+typedef Compare2 = int Function<T>(T a, T b);
+
+void setStrValue(Map<String, dynamic> map, String k) {
+  map[k] = "hello";
+}
+
+
+
+class Animal {
+  void chase(Animal a) {
+    
+  }
+  
+  Animal getParent() {
+    return null;
+  }
+}
+
+class Cat extends Animal {
+  @override
+  void chase(Animal a) {
+
+  }
+  
+  @override
+  Cat getParent() {
+    return new Cat();
+  }
+}
+
+class MaineCoon extends Cat {
+  @override
+  void chase(Object a) {
+
+  }
+
+  @override
+  MaineCoon getParent() {
+    return new MaineCoon();
+  }
 }
 
 
@@ -318,7 +378,7 @@ class ImmutablePoint implements Comparable<ImmutablePoint> {
 
   @override
   int compareTo(ImmutablePoint other) {
-
+    return 1;
   }
 }
 
